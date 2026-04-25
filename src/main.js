@@ -58,7 +58,7 @@ function analyzeSalesData(data, options) {
 
     const sellerIndex = Object.fromEntries(sellerStats.map(seller => [seller.id, seller]));
     const productIndex = Object.fromEntries(data.products.map(product => [product.sku, product]));
-    // @TODO: Расчет выручки и прибыли для каждого продавца
+
     data.purchase_records.forEach(record => {
         const seller = sellerIndex[record.seller_id];
         ++seller.sales_count;
@@ -70,6 +70,11 @@ function analyzeSalesData(data, options) {
             const revenue = calculateRevenue(item);
             const profit = revenue - cost;  
             seller.profit+=profit;
+            
+            if (!seller.products_sold[item.sku]) {
+                seller.products_sold[item.sku] = 0;
+            }
+            seller.products_sold[item.sku] += item.quantity;
         });
     });
     // @TODO: Сортировка продавцов по прибыли
