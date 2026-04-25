@@ -103,7 +103,7 @@ function analyzeSalesData(data, options) {
         sku: product[0],
         quantity: product[1],
       }))
-      .toSorted((firstProduct, secondProduct) => {
+      .sort((firstProduct, secondProduct) => {
         return secondProduct.quantity - firstProduct.quantity;
       })
       .slice(0, 10);
