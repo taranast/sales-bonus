@@ -5,7 +5,8 @@
  * @returns {number}
  */
 function calculateSimpleRevenue(purchase, _product) {
-   // @TODO: Расчет выручки от операции
+   const discount =  1 - (purchase.discount / 100);
+   return purchase.sale_price*purchase.quantity*discount;
 }
 
 /**
@@ -62,6 +63,14 @@ function analyzeSalesData(data, options) {
         const seller = sellerIndex[record.seller_id];
         ++seller.sales_count;
         seller.revenue+=record.total_amount;
+
+        record.items.forEach(item => {
+            const product = productIndex[item.sku];
+            const cost = product.purchase_price*item.quantity;
+            const revenue = calculateRevenue(item);
+            const profit = revenue - cost;  
+            seller.profit+=profit;
+        });
     });
     // @TODO: Сортировка продавцов по прибыли
 
