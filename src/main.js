@@ -89,9 +89,15 @@ function analyzeSalesData(data, options) {
     sellerStats.sort((firstSeller, secondSeller) => {
         return secondSeller.profit - firstSeller.profit;
     });
-    // @TODO: Назначение премий на основе ранжирования
+
     sellerStats.forEach((seller, index) => {
         seller.bonus = calculateBonus(index, sellerStats.length, seller);
+        seller.top_products = Object.entries(seller.products_sold).map(product => ({
+            sku: product[0],
+            quantity: product[1],
+        })).toSorted((firstProduct, secondProduct) => {
+            return secondProduct.quantity - firstProduct.quantity;
+        }).slice(0, 10);
     });
     // @TODO: Подготовка итоговой коллекции с нужными полями
 }
