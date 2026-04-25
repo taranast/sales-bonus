@@ -70,15 +70,17 @@ function analyzeSalesData(data, options) {
             const revenue = calculateRevenue(item);
             const profit = revenue - cost;  
             seller.profit+=profit;
-            
+
             if (!seller.products_sold[item.sku]) {
                 seller.products_sold[item.sku] = 0;
             }
             seller.products_sold[item.sku] += item.quantity;
         });
     });
-    // @TODO: Сортировка продавцов по прибыли
 
+    sellerStats.sort((firstSeller, secondSeller) => {
+        return secondSeller.profit - firstSeller.profit;
+    });
     // @TODO: Назначение премий на основе ранжирования
 
     // @TODO: Подготовка итоговой коллекции с нужными полями
