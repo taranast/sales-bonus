@@ -58,7 +58,11 @@ function analyzeSalesData(data, options) {
     const sellerIndex = Object.fromEntries(sellerStats.map(seller => [seller.id, seller]));
     const productIndex = Object.fromEntries(data.products.map(product => [product.sku, product]));
     // @TODO: Расчет выручки и прибыли для каждого продавца
-
+    data.purchase_records.forEach(record => {
+        const seller = sellerIndex[record.seller_id];
+        ++seller.sales_count;
+        seller.revenue+=record.total_amount;
+    });
     // @TODO: Сортировка продавцов по прибыли
 
     // @TODO: Назначение премий на основе ранжирования
